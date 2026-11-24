@@ -1,0 +1,3 @@
+const stop=new Set(['the','a','an','and','in','at','of','with','my','is','on','to','for']);
+function words(s){return new Set(String(s||'').toLowerCase().replace(/[^a-z0-9ğüşöçıİ ]/gi,' ').split(/\s+/).filter(x=>x.length>2&&!stop.has(x)))}
+function score(a,b){if(a.id===b.id||a.type===b.type||a.status!=='open'||b.status!=='open')return 0;let total=0;if(a.category===b.category)total+=35;const x=words(a.title+' '+a.description),y=words(b.title+' '+b.description);const overlap=[...x].filter(w=>y.has(w)).length;total+=Math.min(50,overlap*12);if(a.location&&b.location&&a.location.toLowerCase()===b.location.toLowerCase())total+=15;return Math.min(total,100)}module.exports={score,words};
